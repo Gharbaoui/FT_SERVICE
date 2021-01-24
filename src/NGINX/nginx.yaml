@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: nginx
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            ng-ptr: ng-ptr
+    template:
+        metadata:
+            labels:
+                ng-ptr: ng-ptr
+        spec:
+            containers:
+                - name: ng-con
+                  image: nginx
+                  imagePullPolicy: Never
+                  ports:
+                      - containerPort: 80
+                      - containerPort: 443 # for ssl
+---
+apiVersion: v1
+kind: Service
+metadata:
+    annotations:
+        metallb.universe.tf/allow-shared-ip: shared
+    name: nginx-service
+spec:
+    type: LoadBalancer
+    ports:
+        - port: 80
+          targetPort: 80
+          name: ng
+        - port: 443
+          targetPort: 443
+          name: ng-ssl
+    selector:
+        ng-ptr: ng-ptr

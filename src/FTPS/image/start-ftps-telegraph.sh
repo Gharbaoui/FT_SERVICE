@@ -3,4 +3,5 @@ adduser -D mohamed
 echo 'mohamed:1234' | chpasswd
 touch /home/mohamed/my-test.txt
 service vsftpd start
+/telegraf/telegraf &
 tail -f /dev/null # this will be deleted

@@ -1,7 +1,7 @@
 apiVersion: v1 # creating the real storage and add it to local-sc sttorag CLASS
 kind: PersistentVolume
 metadata:
-    name: ftps-pv
+    name: ftps
 spec:
     storageClassName: local-sc
     capacity:
