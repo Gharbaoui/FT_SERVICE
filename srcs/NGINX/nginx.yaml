@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: nginx
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            ng-ptr: ng-ptr
+    template:
+        metadata:
+            labels:
+                ng-ptr: ng-ptr
+        spec:
+            containers:
+                - name: ng-con
+                  image: nginx
+                  imagePullPolicy: Never
+                  livenessProbe:
+                    exec:
+                        command:
+                            - sh
+                            - ./liveness.sh
+                  ports:
+                      - containerPort: 80
+                      - containerPort: 443 # for ssl
+                      - containerPort: 22
+---
+apiVersion: v1
+kind: Service
+metadata:
+    annotations:
+        metallb.universe.tf/allow-shared-ip: shared
+    name: nginx-service
+spec:
+    type: LoadBalancer
+    ports:
+        - port: 80
+          targetPort: 80
+          name: ng
+        - port: 443
+          targetPort: 443
+          name: ng-ssl
+        - port: 22
+          targetPort: 22
+          name: ssh
+    selector:
+        ng-ptr: ng-ptr
