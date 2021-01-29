@@ -22,6 +22,7 @@ eval $(minikube docker-env)
 export MKIP=$(minikube ip)
 # MINIKUBE STARTED
 
+
 # installing metallb
 print_line 'instaling metallb' $YELLOW
 replace_ip 'MINIKUBE_IP' $MKIP './srcs/req/config.yaml'
@@ -29,6 +30,12 @@ sh ./srcs/req/install.sh
 replace_ip $MKIP 'MINIKUBE_IP' './srcs/req/config.yaml'
 print_line 'metallb instaled' $GREEN
 # metallb installed
+
+# installing influxdb
+print_line 'instaling influxdb' $YELLOW
+sh ./srcs/INFLUXDB/start.sh
+print_line 'influxdb  instaled' $GREEN
+#influxdb installed
 
 # installing ftps username is 'mohamed' password '1234'
 print_line 'installing FTPS server' $YELLOW
@@ -57,13 +64,12 @@ print_line 'WORDPRESS INSTALLED' $GREEN
 print_line 'installing NGINX' $YELLOW
 replace_ip 'MINIKUBE_IP' $MKIP './srcs/NGINX/image/default.conf'
 sh ./srcs/NGINX/start.sh
-replace_ip 'MINIKUBE_IP' $MKIP './srcs/NGINX/image/default.conf'
+replace_ip $MKIP 'MINIKUBE_IP' './srcs/NGINX/image/default.conf'
 print_line 'NGINX installed' $GREEN
 # nginx installed
 
 # installing grafana and influxdb
 print_line 'installing grafana' $YELLOW
-sh ./srcs/INFLUXDB/start.sh
 sh ./srcs/GRAFANA/start.sh
 print_line 'grafana installed' $GREEN
 #grafana installed

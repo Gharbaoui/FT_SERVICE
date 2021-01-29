@@ -13,7 +13,7 @@ spec:
                 php-ptr: php-ptr
         spec:
             containers:
-                - name: phpmyadmin-con
+                - name: phpmyadmin
                   image: phpmyadmin
                   imagePullPolicy: Never
                   livenessProbe:
@@ -21,6 +21,8 @@ spec:
                         command:
                             - sh
                             - ./liveness.sh
+                    initialDelaySeconds: 10
+                    periodSeconds: 5
                   ports:
                       - containerPort: 5000
 

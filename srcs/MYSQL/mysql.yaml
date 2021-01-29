@@ -42,7 +42,7 @@ spec:
                persistentVolumeClaim:
                     claimName: mysql-pvc
             containers:
-                - name: mysql-con
+                - name: mysql
                   image: mysql
                   imagePullPolicy: Never
                   livenessProbe:
@@ -50,6 +50,8 @@ spec:
                         command:
                             - sh
                             - ./liveness.sh
+                    initialDelaySeconds: 10
+                    periodSeconds: 5
                   volumeMounts:
                     - mountPath: "/var/lib/mysql/"
                       name: mysql-volume

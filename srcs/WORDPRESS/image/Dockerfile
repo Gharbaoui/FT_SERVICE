@@ -16,6 +16,6 @@ RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.13.3-static_linu
 RUN tar xf telegraf-1.13.3-static_linux_amd64.tar.gz
 RUN rm telegraf-1.13.3-static_linux_amd64.tar.gz
 RUN chmod +x telegraf/*
+COPY start.sh ./
 COPY liveness.sh ./
-COPY start-wordpress.sh ./
-CMD ["sh", "start-wordpress.sh"]
+CMD ["sh", "start.sh"]

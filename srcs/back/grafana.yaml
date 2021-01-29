@@ -16,13 +16,6 @@ spec:
               - name: gr-con
                 image: grafana
                 imagePullPolicy: Never
-                livenessProbe:
-                    exec:
-                        command:
-                            - sh
-                            - ./liveness.sh
-                    initialDelaySeconds: 10
-                    periodSeconds: 5
                 ports:
                     - containerPort: 3000
 

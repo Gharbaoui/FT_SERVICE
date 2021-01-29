@@ -28,7 +28,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: ftps-deployment
+    name: ftps
 spec:
     replicas: 1
     selector:
@@ -44,7 +44,7 @@ spec:
                   persistentVolumeClaim: 
                     claimName: ftps-pvc
             containers:
-              - name: ftps-con
+              - name: ftps
                 image: ftps # name of image
                 imagePullPolicy: Never
                 livenessProbe:
@@ -52,6 +52,8 @@ spec:
                         command:
                             - sh
                             - ./liveness.sh
+                    initialDelaySeconds: 10
+                    periodSeconds: 5
                 volumeMounts:
                   - mountPath: "/home/mohamed/"
                     name: ftps-volume

@@ -1,3 +1,4 @@
 service influxdb start
-/telegraf/telegraf
+chmod 777 /var/lib/influxdb/
+/telegraf/telegraf &
 tail -f dev/null

@@ -1,3 +1,28 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+    name: influxdb-pv
+spec:
+    storageClassName: local-sc
+    capacity:
+        storage: 1Gi
+    accessModes:
+        - ReadWriteOnce
+    hostPath:
+        path: "/ft_service/INFLUXDB"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+    name: influxdb-pvc
+spec:
+    storageClassName: local-sc
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,8 +37,12 @@ spec:
             labels:
                 inf-ptr: inf-ptr
         spec:
+            volumes:
+             - name: influxdb-volume
+               persistentVolumeClaim:
+                    claimName: influxdb-pvc
             containers:
-                - name: inf-con
+                - name: influxdb
                   image: influxdb
                   imagePullPolicy: Never
                   livenessProbe:
@@ -21,6 +50,11 @@ spec:
                         command:
                             - sh
                             - ./liveness.sh
+                    initialDelaySeconds: 10
+                    periodSeconds: 5
+                  volumeMounts:
+                    - mountPath: "/var/lib/influxdb/"
+                      name: influxdb-volume
                   ports:
                       - containerPort: 8086
 ---
